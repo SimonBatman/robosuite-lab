@@ -1,0 +1,6 @@
+# Server headless runtime configuration
+mode: server
+render: false
+device: cuda
+num_workers: 8
+server_port: 5000

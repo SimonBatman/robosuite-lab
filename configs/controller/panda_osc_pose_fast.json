@@ -1,0 +1,6 @@
+{
+  "type": "PANDA_OSC_POSE",
+  "mode": "fast",
+  "kp": 300.0,
+  "kv": 25.0
+}

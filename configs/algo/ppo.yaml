@@ -1,0 +1,6 @@
+# Proximal Policy Optimization algorithm configuration
+algorithm: PPO
+learning_rate: 0.0003
+batch_size: 64
+num_epochs: 10
+clip_ratio: 0.2

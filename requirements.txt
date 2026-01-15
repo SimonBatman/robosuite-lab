@@ -1,0 +1,22 @@
+# ===== Core: robosuite + mujoco =====
+robosuite
+mujoco
+
+# ===== RL stack (SB3) =====
+gymnasium
+stable-baselines3
+torch
+
+# ===== Logging =====
+tensorboard
+
+# ===== Utilities =====
+numpy
+tqdm
+
+# ===== Optional: video export (useful for evaluation) =====
+imageio
+imageio-ffmpeg
+
+# ===== Optional: Gym compatibility layer (harmless to include) =====
+shimmy

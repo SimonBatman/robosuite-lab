@@ -1,0 +1,5 @@
+# Local runtime configuration
+mode: local
+render: true
+device: cpu
+num_workers: 4
