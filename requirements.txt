@@ -1,22 +1,27 @@
 # ===== Core: robosuite + mujoco =====
-robosuite
-mujoco
+robosuite>=1.4.1
+mujoco>=2.3.0
 
 # ===== RL stack (SB3) =====
-gymnasium
-stable-baselines3
-torch
+gymnasium>=0.28.1
+stable-baselines3>=2.0.0
+torch>=1.9.0
 
 # ===== Logging =====
-tensorboard
+tensorboard>=2.0.0
 
 # ===== Utilities =====
-numpy
-tqdm
+numpy>=1.20.0
+tqdm>=4.50.0
 
 # ===== Optional: video export (useful for evaluation) =====
-imageio
-imageio-ffmpeg
+imageio>=2.9.0
+imageio-ffmpeg>=0.4.7
 
 # ===== Optional: Gym compatibility layer (harmless to include) =====
-shimmy
+shimmy>=0.2.1
+flask>=2.0.0
+gunicorn>=20.0.0
+pytest>=6.0.0
+black>=21.0
+flake8>=3.9.0

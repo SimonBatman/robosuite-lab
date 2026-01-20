@@ -1,4 +1,5 @@
 import os
+import json
 import numpy as np
 
 # ---- (optional but recommended on Windows) avoid OpenMP crash / oversubscription ----
@@ -14,12 +15,10 @@ from rslab.envs.make_sb3_env import SB3EnvConfig, make_sb3_env
 
 MODEL_PATH = "outputs/checkpoints/ppo_lift_panda.zip"
 VECNORM_PATH = "outputs/checkpoints/vecnorm_lift.pkl"
-
-# From your obs layout: cube_pos slice [0:3], z is index 2
-CUBE_Z_INDEX = 2
+LAYOUT_PATH = "outputs/checkpoints/obs_layout_lift_panda.json"
 
 # Success criterion: lift height relative to episode start
-LIFT_DELTA_SUCCESS = 0.05  # 5 cm
+LIFT_DELTA_SUCCESS = 0.10  # 5 cm
 
 # If success is achieved, end episode early
 EARLY_STOP_ON_SUCCESS = True
@@ -28,7 +27,45 @@ EARLY_STOP_ON_SUCCESS = True
 MAX_STEPS_PER_EP = 1000
 
 
+def load_layout(path):
+    """Load obs layout JSON if it exists."""
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, "r") as f:
+            data = json.load(f)
+        return data
+    except Exception as e:
+        print(f"[WARN] Failed to load layout from {path}: {e}")
+        return None
+
+
+def get_cube_z_index_from_layout(layout_json):
+    """Extract cube_z index from layout JSON."""
+    layout = layout_json.get("layout", {})
+    if "object-state" in layout:
+        start = layout["object-state"]["start"]
+        # cube_z is the z-coordinate (index 2) within object-state
+        return start + 2
+    return None
+
+
 def main():
+    # Load layout to get cube_z_index
+    layout_json = load_layout(LAYOUT_PATH)
+    cube_z_index = None
+    
+    if layout_json:
+        if layout_json.get("verified", False):
+            cube_z_index = get_cube_z_index_from_layout(layout_json)
+            print(f"[INFO] Loaded verified layout. cube_z_index = {cube_z_index}")
+        else:
+            print("[WARN] Layout found but not verified; using fallback cube_z_index = 2")
+            cube_z_index = 2
+    else:
+        # Fallback: assume object-state at [0:10], cube_z at index 2
+        print("[WARN] Layout not found; using fallback cube_z_index = 2")
+        cube_z_index = 2
     def _make():
         cfg = SB3EnvConfig(
             env_name="Lift",
@@ -67,7 +104,7 @@ def main():
 
         for t in range(1, MAX_STEPS_PER_EP + 1):
             # obs is (1, obs_dim)
-            cube_z = float(obs[0][CUBE_Z_INDEX])
+            cube_z = float(obs[0][cube_z_index])
             if init_z is None:
                 init_z = cube_z
                 max_z = cube_z

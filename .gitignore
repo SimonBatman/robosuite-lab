@@ -22,8 +22,11 @@ wheels/
 
 # Virtual environments
 venv/
+.venv/
 ENV/
 env/
+.env
+.env.*
 
 # IDE
 .vscode/
@@ -32,15 +35,35 @@ env/
 *.swo
 *~
 
-# Outputs
+# Outputs (do not commit models/logs)
 outputs/
+outputs/*
+!outputs/.gitkeep
 logs/
 checkpoints/
 videos/
+*.zip
+*.pkl
+*.pth
+*.pt
+*.h5
 
 # Data
 datasets/demos/
 
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
 # OS
 .DS_Store
 Thumbs.db
+
+# Misc
+.cache/
+.pytest_cache/
+.mypy_cache/
+tensorboard/
+tb/
+runs/
+*.log
